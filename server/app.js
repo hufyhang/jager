@@ -11,8 +11,9 @@ class App {
   constructor(rootPath, name, router) {
     this.name = name;
     this.path = rootPath;
-    this.initialize();
     this.router = router;
+
+    this.initialize();
   }
 
   initialize() {
@@ -21,8 +22,6 @@ class App {
     this.raw = JSON.parse(this.raw);
 
     this.config = this.processRaw();
-
-    return this.config;
   }
 
   processRaw() {
@@ -36,17 +35,16 @@ class App {
       for (let api in apis) {
         if (hasOwn.call(apis, api)) {
           apis[api].forEach(item => {
-            let url = `${this.name.trim()}/${api.trim()}`;
+            let url = `/${this.name.trim()}/${api.trim()}`;
             let method = item.method.toLowerCase();
 
-            let response = fs.readFileSync(
-              path.join(this.path, item.mock),
-              'utf8'
-            );
+            let filepath = path.join(this.path, item.mock);
 
-            if (method in METHODS) {
-              this.router[method](url, function * (next) {
-                this.body = response;
+            if (METHODS.indexOf(method.toLowerCase().trim()) !== -1) {
+              console.log(`Add router: [${method}] @ ${url}`);
+
+              this.router[method](url, function * () {
+                this.body = fs.readFileSync(filepath, 'utf8');
               });
             }
           });
