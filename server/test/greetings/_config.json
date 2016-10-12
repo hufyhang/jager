@@ -1,0 +1,8 @@
+{
+  "apis": {
+    "get": [{
+      "method": "get",
+      "mock": "data.json"
+    }]
+  }
+}
