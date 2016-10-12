@@ -14,6 +14,8 @@ class Config {
 
     this.root = root;
     this.dirs = [];
+
+    this.readRoot();
   }
 
   readRoot() {
