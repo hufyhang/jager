@@ -41,7 +41,7 @@ class App {
             let filepath = path.join(this.path, item.mock);
 
             if (METHODS.indexOf(method.toLowerCase().trim()) !== -1) {
-              console.log(`Add router: [${method}] @ ${url}`);
+              console.log(`Add router: [${method.toUpperCase()}] @ ${url}`);
 
               this.router[method](url, function * () {
                 this.body = fs.readFileSync(filepath, 'utf8');
