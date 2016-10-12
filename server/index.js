@@ -4,7 +4,7 @@ let koa = require('koa');
 let kcors = require('kcors');
 let router = require('koa-router')();
 
-let Config = require('./config.js');
+let Config = require('./lib/config.js');
 const ROOT_PATH = process.argv[2] || '.';
 
 let port = 3000;

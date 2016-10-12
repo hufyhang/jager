@@ -7,6 +7,25 @@ let hasOwn = Object.prototype.hasOwnProperty;
 const METHODS = ['get', 'post', 'put', 'delete'];
 const CONFIG_FILE = require('./define.js').APP_CONFIG_FILE;
 
+var helper = function (fn) {
+  return function () {
+    var args = [].slice.call(arguments);
+    var pass;
+    args.push(function () { // 在回调函数中植入收集逻辑
+      if (pass) {
+        pass.apply(null, arguments);
+      }
+    });
+    fn.apply(null, args);
+
+    return function (fn) { // 传入一个收集函数
+      pass = fn;
+    };
+  };
+};
+
+let readFile = helper(fs.readFile);
+
 class App {
   constructor(rootPath, name, router) {
     this.name = name;
@@ -44,7 +63,7 @@ class App {
               console.log(`Add router: [${method.toUpperCase()}] @ ${url}`);
 
               this.router[method](url, function * () {
-                this.body = fs.readFileSync(filepath, 'utf8');
+                this.body = yield readFile(filepath, 'utf8');
               });
             }
           });

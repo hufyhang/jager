@@ -24,7 +24,7 @@ class Config {
       return state.isDirectory() && !isUnixHiddenPath(file);
     });
 
-    console.log(`Apps found: ${dirs}`);
+    console.log(`Apps found: [${dirs.join(', ')}]`);
     this.dirs = dirs;
     return this;
   }
